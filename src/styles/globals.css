@@ -1,0 +1,1078 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+
+/* ==============================
+   CSS CUSTOM PROPERTIES
+   ============================== */
+:root {
+  --bg-void: #080808;
+  --bg-surface: #0f0f0f;
+  --bg-elevated: #161616;
+  --bg-border: #2a2a2a;
+  --accent-acid: #c8f135;
+  --accent-amber: #f5a623;
+  --accent-red: #ff3b30;
+  --text-primary: #f0f0f0;
+  --text-secondary: #7a7a7a;
+  --text-tertiary: #3a3a3a;
+  --text-invert: #080808;
+}
+
+/* ==============================
+   RESET & BASE
+   ============================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  cursor: none;
+}
+
+body {
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ==============================
+   GRAIN TEXTURE OVERLAY
+   ============================== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ==============================
+   CUSTOM CURSOR
+   ============================== */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+
+.custom-cursor::before {
+  content: '+';
+  color: var(--accent-acid);
+  font-family: 'Space Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  display: block;
+  text-align: center;
+}
+
+/* ==============================
+   TYPOGRAPHY
+   ============================== */
+.font-syne { font-family: 'Syne', sans-serif; }
+.font-dm-mono { font-family: 'DM Mono', monospace; }
+.font-space-mono { font-family: 'Space Mono', monospace; }
+
+.label-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.acid-text { color: var(--accent-acid); }
+
+/* ==============================
+   GRID OVERLAY (HERO)
+   ============================== */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200, 241, 53, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 241, 53, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* ==============================
+   SCANLINE EFFECT
+   ============================== */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.12) 2px,
+    rgba(0,0,0,0.12) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: scanline-scroll 8s linear infinite;
+}
+
+@keyframes scanline-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 40px; }
+}
+
+/* ==============================
+   PULSING GREEN DOT
+   ============================== */
+.pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-acid);
+  animation: pulse-anim 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-anim {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+/* ==============================
+   GLITCH EFFECT
+   ============================== */
+.glitch-hover:hover {
+  animation: glitch 0.3s steps(2) forwards;
+}
+
+@keyframes glitch {
+  0% { text-shadow: 2px 0 var(--accent-acid), -2px 0 var(--accent-amber); }
+  25% { text-shadow: -2px 0 var(--accent-acid), 2px 0 var(--accent-amber); clip-path: inset(20% 0 30% 0); }
+  50% { text-shadow: 2px 2px var(--accent-acid), -2px -2px var(--accent-amber); }
+  75% { text-shadow: -1px 0 var(--accent-acid); clip-path: inset(60% 0 10% 0); }
+  100% { text-shadow: none; clip-path: none; }
+}
+
+/* ==============================
+   BUTTONS
+   ============================== */
+.btn-primary {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  background-color: var(--accent-acid);
+  color: var(--text-invert);
+  border: 1px solid var(--accent-acid);
+  padding: 12px 28px;
+  border-radius: 4px;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: var(--accent-acid);
+  border: 1px solid var(--accent-acid);
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(200, 241, 53, 0.08);
+  transform: translateY(-2px);
+}
+
+.btn-ghost:active {
+  transform: translateY(0);
+}
+
+.btn-dark {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--bg-border);
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.15s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-dark:hover {
+  border-color: var(--accent-acid);
+  color: var(--accent-acid);
+  transform: translateY(-2px);
+}
+
+/* ==============================
+   CARDS
+   ============================== */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  padding: 32px;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--accent-acid);
+}
+
+/* ==============================
+   INPUTS
+   ============================== */
+.input-dark {
+  background: var(--bg-void);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  padding: 10px 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-dark:focus {
+  border-color: rgba(200, 241, 53, 0.4);
+}
+
+.input-dark::placeholder {
+  color: var(--text-tertiary);
+  font-family: 'DM Mono', monospace;
+}
+
+select.input-dark option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+/* ==============================
+   STAT PILLS
+   ============================== */
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-secondary);
+  border: 1px solid var(--bg-border);
+  border-radius: 100px;
+  padding: 6px 14px;
+  transition: border-color 0.2s ease;
+}
+
+.stat-pill:hover {
+  border-color: rgba(200, 241, 53, 0.3);
+}
+
+/* ==============================
+   TICKER / MARQUEE
+   ============================== */
+.ticker-wrap {
+  border-top: 1px solid var(--bg-border);
+  border-bottom: 1px solid var(--bg-border);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 12px 0;
+}
+
+.ticker-content {
+  display: inline-block;
+  animation: ticker-left 30s linear infinite;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+.ticker-content-reverse {
+  display: inline-block;
+  animation: ticker-right 30s linear infinite;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+@keyframes ticker-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes ticker-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ==============================
+   PROGRESS BAR
+   ============================== */
+.progress-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--bg-border);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent-acid);
+  transition: width 0.5s ease;
+}
+
+/* ==============================
+   CHAT MESSAGES
+   ============================== */
+.chat-ai-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-acid);
+  margin-bottom: 6px;
+}
+
+.chat-user-bubble {
+  background: var(--bg-elevated);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  max-width: 75%;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  align-self: flex-end;
+}
+
+/* ==============================
+   DIVIDER
+   ============================== */
+.mono-divider {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  opacity: 0.4;
+  letter-spacing: 0.05em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ==============================
+   PHASE BADGES
+   ============================== */
+.phase-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-acid);
+}
+
+/* ==============================
+   TAG CHIPS
+   ============================== */
+.tag-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  border: 1px solid var(--bg-border);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+/* ==============================
+   EXPLOITABILITY BAR
+   ============================== */
+.exploit-bar {
+  height: 3px;
+  background: var(--bg-border);
+  border-radius: 0;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.exploit-fill {
+  height: 100%;
+  background: var(--accent-acid);
+}
+
+/* ==============================
+   LOADING SCREEN
+   ============================== */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-void);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 99998;
+}
+
+.loading-progress {
+  width: 240px;
+  height: 2px;
+  background: var(--bg-border);
+  margin-top: 24px;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.loading-progress-fill {
+  height: 100%;
+  background: var(--accent-acid);
+  transition: width 0.05s linear;
+}
+
+/* ==============================
+   PROFILE STRENGTH METER (vertical)
+   ============================== */
+.strength-meter-track {
+  width: 6px;
+  height: 120px;
+  background: var(--bg-border);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.strength-meter-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: var(--accent-acid);
+  transition: height 0.5s ease;
+}
+
+/* ==============================
+   UNIVERSITY MODAL
+   ============================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 40px;
+  position: relative;
+}
+
+/* ==============================
+   LINE NUMBERS (ESSAY EDITOR)
+   ============================== */
+.essay-editor-wrap {
+  position: relative;
+  display: flex;
+}
+
+.line-numbers {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  padding: 14px 12px;
+  border-right: 1px solid var(--bg-border);
+  text-align: right;
+  min-width: 40px;
+  user-select: none;
+  line-height: 1.8;
+}
+
+.essay-textarea {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  padding: 14px 16px;
+  resize: none;
+  flex: 1;
+  min-height: 320px;
+}
+
+/* ==============================
+   SECTION LABEL ANIMATION
+   ============================== */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==============================
+   SCROLLBAR
+   ============================== */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-border);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ==============================
+   MOBILE NAV
+   ============================== */
+.mobile-menu {
+  position: fixed;
+  top: 0; right: 0;
+  width: 280px;
+  height: 100vh;
+  background: var(--bg-surface);
+  border-left: 1px solid var(--bg-border);
+  z-index: 500;
+  padding: 80px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ==============================
+   CHECKBOX CHIPS (Profile Builder)
+   ============================== */
+.checkbox-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  border: 1px solid var(--bg-border);
+  padding: 6px 12px;
+  border-radius: 2px;
+  cursor: none;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.checkbox-chip.selected {
+  border-color: var(--accent-acid);
+  color: var(--accent-acid);
+  background: rgba(200, 241, 53, 0.06);
+}
+
+.checkbox-chip:hover:not(.selected) {
+  border-color: var(--text-secondary);
+}
+
+/* ==============================
+   TOGGLE
+   ============================== */
+.toggle-group {
+  display: flex;
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.toggle-option {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  cursor: none;
+  transition: all 0.15s ease;
+  border-right: 1px solid var(--bg-border);
+}
+
+.toggle-option:last-child {
+  border-right: none;
+}
+
+.toggle-option.active {
+  background: var(--accent-acid);
+  color: var(--text-invert);
+}
+
+/* ==============================
+   PRICING CARDS
+   ============================== */
+.pricing-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  padding: 40px 32px;
+  transition: border-color 0.2s ease;
+  position: relative;
+}
+
+.pricing-card.featured {
+  border-color: var(--accent-acid);
+}
+
+.pricing-card:hover {
+  border-color: var(--accent-acid);
+}
+
+.price-tag {
+  font-family: 'Syne', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 6vw, 72px);
+  color: var(--accent-acid);
+  line-height: 1;
+}
+
+/* ==============================
+   TESTIMONIAL CARD
+   ============================== */
+.testimonial-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  padding: 24px;
+  min-width: 320px;
+  transition: border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.testimonial-card:hover {
+  border-color: var(--accent-acid);
+}
+
+/* ==============================
+   CIRCLE DECORATION
+   ============================== */
+.circle-deco {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 241, 53, 0.02);
+  pointer-events: none;
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+@media (max-width: 768px) {
+  .card {
+    padding: 24px;
+  }
+  .modal-content {
+    padding: 24px;
+  }
+  .pricing-card {
+    padding: 28px 20px;
+  }
+}
+
+/* ==============================
+   COUNT UP NUMBERS
+   ============================== */
+.stat-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 7vw, 72px);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+/* ==============================
+   DOSSIER SUMMARY
+   ============================== */
+.dossier-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bg-border);
+  gap: 16px;
+}
+
+.dossier-row:last-child {
+  border-bottom: none;
+}
+
+/* ==============================
+   DASHBOARD COMPONENTS
+   ============================== */
+
+/* ── Input ── */
+.input-dark {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-dark:focus {
+  border-color: var(--accent-acid);
+}
+
+.input-dark::placeholder {
+  color: var(--text-tertiary);
+}
+
+.input-dark option {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--accent-acid);
+  color: var(--text-invert);
+  border: none;
+  border-radius: 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.2s ease;
+}
+
+.btn-dark:hover {
+  border-color: var(--accent-acid);
+  color: var(--accent-acid);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px dashed var(--bg-border);
+  border-radius: 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent-acid);
+  color: var(--accent-acid);
+  border-style: solid;
+}
+
+/* ── Checkbox Chip ── */
+.checkbox-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--bg-border);
+  border-radius: 2px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: none;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.checkbox-chip:hover {
+  border-color: var(--accent-acid);
+  color: var(--text-primary);
+}
+
+.checkbox-chip.selected {
+  background: rgba(200, 241, 53, 0.12);
+  border-color: var(--accent-acid);
+  color: var(--accent-acid);
+}
+
+/* ── Toggle Group ── */
+.toggle-group {
+  display: inline-flex;
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.toggle-option {
+  padding: 6px 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  cursor: none;
+  border-right: 1px solid var(--bg-border);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.toggle-option:last-child {
+  border-right: none;
+}
+
+.toggle-option.active {
+  background: var(--accent-acid);
+  color: var(--text-invert);
+}
+
+/* ── Progress Bar ── */
+.progress-bar {
+  height: 4px;
+  background: var(--bg-border);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent-acid);
+  transition: width 0.5s ease;
+}
+
+/* ── Essay Editor ── */
+.essay-editor-wrap {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.line-numbers {
+  width: 40px;
+  padding: 12px 8px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--bg-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  user-select: none;
+  overflow: hidden;
+}
+
+.line-numbers div {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+  text-align: right;
+  height: 1.6em;
+}
+
+.essay-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  resize: none;
+  outline: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.essay-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* ── Chat Styles ── */
+.chat-ai-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--accent-acid);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.chat-user-bubble {
+  background: var(--bg-elevated);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  max-width: 80%;
+}
+
+/* ── Label Tags ── */
+.label-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ── Pulse Dot ── */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-acid);
+  animation: pulse-anim 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-anim {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* ── Card ── */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  padding: 20px;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--accent-acid);
+}
+
+/* ── Exploit Bar ── */
+.exploit-bar {
+  height: 3px;
+  background: var(--bg-border);
+  margin-top: 4px;
+}
+
+.exploit-fill {
+  height: 100%;
+  background: var(--accent-acid);
+  transition: width 0.3s ease;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-border);
+  border-radius: 4px;
+  padding: 32px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* ── Responsive Dashboard ── */
+@media (max-width: 768px) {
+  .dashboard-main-content {
+    margin-left: 0 !important;
+    padding-bottom: 72px;
+  }
+}
